@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>WEB FRENZYS</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto;
+background-color: #050505;
+overflow-x:hidden;
+position:relative;
+}
+
+/* BACKGROUND CANVAS (PARTICLES) */
+canvas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
+/* HEADER */
+header{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+padding:20px 60px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:20;
+backdrop-filter:blur(12px);
+background:rgba(0,0,0,0.7);
+border-bottom:1px solid rgba(255,255,255,0.1);
+}
+
+.logo-area{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.logo-area img{
+height:42px;
+animation: logoPulse 4s infinite ease-in-out;
+}
+
+@keyframes logoPulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(138,43,226,0)); }
+    50% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(138,43,226,0.5)); }
+}
+
+.logo-text{
+font-size:1.2rem;
+font-weight:700;
+color:white;
+letter-spacing:.08em;
+}
+
+nav{
+display:flex;
+gap:35px;
+}
+
+nav a{
+text-decoration:none;
+color:white;
+font-size:.95rem;
+font-weight:500;
+letter-spacing:.08em;
+position:relative;
+}
+
+nav a::after{
+content:'';
+position:absolute;
+left:0;
+bottom:-4px;
+width:0%;
+height:2px;
+background:white;
+transition:.3s;
+}
+
+nav a:hover::after{
+width:100%;
+}
+
+/* HERO SECTION */
+.content{
+position:relative;
+margin-top:180px;
+padding-bottom:120px;
+text-align:center;
+color:white;
+z-index:10;
+}
+
+h1 {
+font-size: clamp(4.5rem, 13vw, 11rem);
+font-weight: 900;
+letter-spacing: -.06em;
+background: linear-gradient(to right, #ffffff 20%, #8a2be2 40%, #8a2be2 60%, #ffffff 80%);
+background-size: 200% auto;
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+    to { background-position: 200% center; }
+}
+
+.tagline{
+font-size:clamp(.9rem,2vw,1.2rem);
+font-weight:300;
+color:rgba(255,255,255,0.8);
+letter-spacing:.15em;
+max-width:900px;
+margin:20px auto;
+line-height:1.6;
+}
+
+.buttons{
+display:flex;
+justify-content:center;
+margin-top:35px;
+}
+
+.glass-button{
+padding:16px 40px;
+font-size:1rem;
+font-weight:600;
+letter-spacing:.08em;
+color:white;
+background:linear-gradient(135deg, rgba(138,43,226,0.3), rgba(0,0,0,0.5));
+border-radius:40px;
+border:1px solid rgba(255,255,255,0.3);
+backdrop-filter:blur(30px);
+cursor:pointer;
+animation:buttonGlow 2.5s ease-in-out infinite alternate;
+text-decoration: none;
+}
+
+@keyframes buttonGlow{
+from{ box-shadow: 0 0 10px rgba(138,43,226,0.3); }
+to{ box-shadow: 0 0 30px rgba(138,43,226,0.6), 0 0 10px rgba(255,255,255,0.2); }
+}
+
+/* SERVICES SECTION */
+.services{
+padding:100px 0;
+text-align:center;
+position:relative;
+z-index:10;
+}
+
+.services h2{
+color:white;
+font-size:32px;
+letter-spacing:6px;
+margin-bottom:60px;
+font-weight:700;
+}
+
+.services-container{
+display:flex;
+justify-content:center;
+gap:60px;
+flex-wrap:wrap;
+}
+
+.service{
+width:220px;
+padding:40px 20px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.1);
+display:flex;
+flex-direction:column;
+align-items:center;
+transition:0.4s;
+opacity:0;
+transform:translateY(40px);
+}
+
+.service:hover{
+transform:translateY(-10px) scale(1.05);
+background:rgba(138,43,226,0.1);
+border:1px solid rgba(138,43,226,0.4);
+box-shadow:0 10px 40px rgba(0,0,0,0.5);
+}
+
+.service img{
+width:80px;
+margin-bottom:15px;
+transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+animation:floatIcon 3s ease-in-out infinite;
+}
+
+.service:hover img {
+    transform: rotateY(360deg);
+}
+
+@keyframes floatIcon{
+0%, 100%{transform:translateY(0px);}
+50%{transform:translateY(-10px);}
+}
+
+.service p{
+color:white;
+font-size:14px;
+letter-spacing:2px;
+font-weight:700;
+}
+
+.service.show{
+opacity:1;
+transform:translateY(0);
+transition:all .8s ease;
+}
+
+/* FOUNDER SECTION */
+.founder-section {
+padding: 100px 20px;
+text-align: center;
+position: relative;
+z-index: 10;
+}
+
+.founder-title {
+font-size: 3rem;
+font-weight: 800;
+letter-spacing: 4px;
+margin-bottom: 50px;
+background: linear-gradient(to right, #ffffff 20%, #8a2be2 40%, #8a2be2 60%, #ffffff 80%);
+background-size: 200% auto;
+background-clip: text;
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+animation: shine 4s linear infinite;
+}
+
+.founder-image-wrapper {
+width: 260px;
+height: 260px;
+margin: 0 auto 40px;
+border-radius: 30px;
+padding: 5px;
+background: linear-gradient(135deg, #8a2be2, #4b0082);
+box-shadow: 0 0 25px rgba(138, 43, 226, 0.5);
+overflow: hidden;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.founder-image-wrapper img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+border-radius: 25px;
+}
+
+.founder-text {
+max-width: 850px;
+margin: 0 auto;
+color: rgba(255, 255, 255, 0.9);
+font-size: 1.1rem;
+line-height: 1.8;
+background: rgba(255, 255, 255, 0.03);
+padding: 35px;
+border-radius: 20px;
+border: 1px solid rgba(255, 255, 255, 0.1);
+backdrop-filter: blur(10px);
+}
+
+/* CONTACT SECTION */
+.contact-section {
+padding: 100px 20px;
+text-align: center;
+position: relative;
+z-index: 10;
+}
+
+.contact-container {
+max-width: 600px;
+margin: 0 auto;
+background: rgba(255, 255, 255, 0.05);
+backdrop-filter: blur(20px);
+padding: 40px;
+border-radius: 30px;
+border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.contact-form {
+display: flex;
+flex-direction: column;
+gap: 15px;
+}
+
+.contact-form input, .contact-form textarea {
+width: 100%;
+padding: 15px;
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.2);
+border-radius: 12px;
+color: white;
+font-family: inherit;
+outline: none;
+transition: 0.3s;
+}
+
+.contact-form input:focus, .contact-form textarea:focus {
+border-color: #8a2be2;
+background: rgba(138, 43, 226, 0.05);
+}
+
+.submit-btn {
+padding: 18px;
+background: #8a2be2;
+color: white;
+border: none;
+border-radius: 12px;
+font-weight: 700;
+cursor: pointer;
+transition: 0.3s;
+letter-spacing: 1px;
+}
+
+.submit-btn:hover {
+background: #a04ef6;
+box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+}
+
+#status-message {
+display: none;
+padding: 20px;
+animation: fadeIn 0.6s ease forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.email-direct {
+margin-top: 20px;
+display: block;
+color: rgba(255,255,255,0.5);
+text-decoration: none;
+font-size: 0.9rem;
+}
+
+/* WHATSAPP FLOAT BUTTON */
+.whatsapp-float{
+position:fixed;
+bottom:25px;
+right:25px;
+width:60px;
+height:60px;
+border-radius:50%;
+background:#25D366;
+display:flex;
+align-items:center;
+justify-content:center;
+box-shadow:0 8px 25px rgba(0,0,0,0.3);
+z-index:999;
+animation:whatsappPulse 2s infinite;
+}
+
+.whatsapp-float img{
+width:35px;
+}
+
+@keyframes whatsappPulse{
+0%{ box-shadow:0 0 0 0 rgba(37, 211, 102, 0.7); }
+70%{ box-shadow:0 0 0 20px rgba(37, 211, 102, 0); }
+100%{ box-shadow:0 0 0 0 rgba(37, 211, 102, 0); }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo-area">
+<img src="https://i.ibb.co/whrSkdzK/logo.png" alt="WEB FRENZYS">
+<div class="logo-text">WEB FRENZYS</div>
+</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#about">About Us</a>
+<a href="#contact">Contact</a>
+</nav>
+</header>
+
+<canvas id="canvas"></canvas>
+
+<div class="content">
+<h1>WEB FRENZYS</h1>
+<p class="tagline">
+At WEB FRENZYS, we design smart and affordable websites that help supermarkets, hotels, restaurants, and local shops stand out online and reach more customers
+</p>
+<div class="buttons">
+<a href="#contact" class="glass-button">GET STARTED</a>
+</div>
+</div>
+
+<section class="services">
+<h2>SERVICES PROVIDED</h2>
+<div class="services-container">
+<div class="service">
+<img src="https://i.ibb.co/392yS83Q/logo.png" alt="Web Development">
+<p>WEB DEVELOPMENT</p>
+</div>
+<div class="service">
+<img src="https://i.ibb.co/4Zm3b2VX/logo.png" alt="Customer Support">
+<p>CUSTOMER SUPPORT</p>
+</div>
+<div class="service">
+<img src="https://i.ibb.co/qvcC0RK/logo.png" alt="Affordable Price">
+<p>AFFORDABLE PRICE</p>
+</div>
+</div>
+</section>
+
+<section class="founder-section" id="about">
+<h2 class="founder-title">FOUNDER</h2>
+<div class="founder-image-wrapper">
+    <img src="https://i.ibb.co/9kxj8Qbv/IMG-20250106-WA0016.jpg" alt="Founder of WEB FRENZYS">
+</div>
+<div class="founder-text">
+    WEB FRENZYS is a modern web development startup focused on helping small businesses build a strong online presence. We design clean, fast, and professional websites for supermarkets, hotels, restaurants, and local shops. Our mission is to make digital technology simple and affordable so every business can grow online.
+</div>
+</section>
+
+<section class="contact-section" id="contact">
+    <h2 class="founder-title">EMAIL US</h2>
+    <div class="contact-container">
+        <form id="contact-form" action="https://formspree.io/f/mqakpneq" method="POST" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="How can we help your business?" required></textarea>
+            <button type="submit" id="submit-btn" class="submit-btn">SEND MESSAGE</button>
+        </form>
+
+        <div id="status-message">
+            <img src="https://i.ibb.co/whrSkdzK/logo.png" style="height:50px; margin-bottom:15px;">
+            <h3 style="color:#8a2be2; margin-bottom:10px;">Message Sent!</h3>
+            <p style="color:white;">We'll get back to you at <strong>webfrenzys@gmail.com</strong> shortly.</p>
+            <button onclick="location.reload()" class="submit-btn" style="margin-top:20px; padding:10px 20px;">Send Another</button>
+        </div>
+
+        <a href="mailto:webfrenzys@gmail.com" class="email-direct">Or email directly: webfrenzys@gmail.com</a>
+    </div>
+</section>
+
+<a href="https://wa.me/917975506483" class="whatsapp-float" target="_blank">
+<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+</a>
+
+<script>
+// --- ANIMATED PARTICLES BACKGROUND ---
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let particlesArray = [];
+
+class Particle {
+constructor(x, y, speedX, speedY, size) {
+this.x = x; this.y = y;
+this.speedX = speedX; this.speedY = speedY;
+this.size = size;
+}
+update() {
+this.x += this.speedX; this.y += this.speedY;
+if (this.x > canvas.width || this.x < 0) this.speedX *= -1;
+if (this.y > canvas.height || this.y < 0) this.speedY *= -1;
+}
+draw() {
+ctx.fillStyle = "rgba(138, 43, 226, 0.8)";
+ctx.beginPath();
+ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+ctx.fill();
+}
+}
+
+function init() {
+particlesArray = [];
+let numberOfParticles = (canvas.width * canvas.height) / 9000;
+for (let i = 0; i < numberOfParticles; i++) {
+let size = Math.random() * 2 + 1;
+let x = Math.random() * canvas.width;
+let y = Math.random() * canvas.height;
+let speedX = (Math.random() * 1) - 0.5;
+let speedY = (Math.random() * 1) - 0.5;
+particlesArray.push(new Particle(x, y, speedX, speedY, size));
+}
+}
+
+function connect() {
+for (let a = 0; a < particlesArray.length; a++) {
+for (let b = a; b < particlesArray.length; b++) {
+let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
++ ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+if (distance < (canvas.width / 7) * (canvas.height / 7)) {
+let opacityValue = 1 - (distance / 20000);
+ctx.strokeStyle = 'rgba(138, 43, 226,' + opacityValue + ')';
+ctx.lineWidth = 1;
+ctx.beginPath();
+ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+ctx.stroke();
+}
+}
+}
+}
+
+function animate() {
+ctx.clearRect(0, 0, canvas.width, canvas.height);
+for (let i = 0; i < particlesArray.length; i++) {
+particlesArray[i].update();
+particlesArray[i].draw();
+}
+connect();
+requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', function() {
+canvas.width = innerWidth; canvas.height = innerHeight;
+init();
+});
+
+init();
+animate();
+
+// --- SERVICES SCROLL REVEAL ---
+const services=document.querySelectorAll(".service");
+function revealServices(){
+const trigger=window.innerHeight*0.85;
+services.forEach(service=>{
+const top=service.getBoundingClientRect().top;
+if(top<trigger){
+service.classList.add("show");
+}
+});
+}
+window.addEventListener("scroll",revealServices);
+revealServices();
+
+// --- AJAX FORM SUBMISSION ---
+const contactForm = document.getElementById("contact-form");
+const statusMsg = document.getElementById("status-message");
+const submitBtn = document.getElementById("submit-btn");
+
+contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    submitBtn.innerHTML = "SENDING...";
+    submitBtn.disabled = true;
+
+    const data = new FormData(e.target);
+    fetch(e.target.action, {
+        method: 'POST',
+        body: data,
+        headers: { 'Accept': 'application/json' }
+    }).then(response => {
+        if (response.ok) {
+            contactForm.style.display = "none";
+            statusMsg.style.display = "block";
+        } else {
+            alert("Oops! Something went wrong.");
+            submitBtn.innerHTML = "SEND MESSAGE";
+            submitBtn.disabled = false;
+        }
+    }).catch(error => {
+        alert("Server error. Please try again later.");
+        submitBtn.innerHTML = "SEND MESSAGE";
+        submitBtn.disabled = false;
+    });
+});
+</script>
+
+</body>
+</html>
